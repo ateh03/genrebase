@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genrebase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Swap these to re-theme the whole site */
+  --bg:#ffffff;
+  --bg2:#f5f5f8;
+  --card:#ffffff;
+  --card2:#efeff4;
+  --line:#d8d8e0;
+  --text:#14141c;
+  --text2:#34343f;
+  --muted:#6a6a78;
+  --violet:#7C3AED;
+  --pink:#D9226F;
+  --amber:#B7791F;
+  --teal:#0F8A7A;
+  --grad:linear-gradient(135deg,#F43F8E 0%,#8B5CF6 100%);
+  --display:'Fraunces',Georgia,serif;
+  --sans:Verdana,Geneva,'DejaVu Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);color:var(--text);background:var(--bg);
+  min-height:100vh;line-height:1.5;font-size:13px;
+}
+button{font-family:inherit;cursor:pointer}
+.wrap{max-width:1120px;margin:0 auto;padding:0 1.5rem}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(11,10,26,.72);border-bottom:1px solid var(--line)}
+.head{display:flex;align-items:center;gap:1.25rem;padding:.9rem 0;flex-wrap:wrap}
+.logo{font-family:var(--display);font-size:1.7rem;font-weight:700;letter-spacing:-.02em;cursor:pointer;background:none;border:none;color:var(--text)}
+.logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+.tabs{display:flex;gap:.25rem;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.25rem}
+.tab{background:none;border:none;color:var(--muted);font-size:.85rem;font-weight:500;padding:.45rem 1rem;border-radius:999px;transition:all .18s}
+.tab:hover{color:var(--text)}
+.tab.on{background:var(--grad);color:#fff}
+.hsearch{margin-left:auto;display:flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.2rem .25rem .2rem 1rem;min-width:260px;transition:border-color .18s,box-shadow .18s}
+.hsearch:focus-within{border-color:var(--pink);box-shadow:0 0 0 4px rgba(244,63,142,.14)}
+.hsearch input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:.9rem;font-family:var(--sans);padding:.4rem 0}
+.hsearch input::placeholder{color:var(--muted)}
+.hsearch button{background:var(--grad);border:none;color:#fff;font-size:.8rem;font-weight:600;padding:.5rem 1rem;border-radius:999px}
+
+/* ---------- views ---------- */
+.view{display:none;padding-bottom:5rem}
+.view.on{display:block;animation:rise .35s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- hero ---------- */
+.hero{padding:3.5rem 0 1.5rem}
+.hero h1{font-family:var(--display);font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.05;font-weight:700;letter-spacing:-.025em;max-width:760px}
+.hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--text2);font-size:1.05rem;max-width:520px;margin-top:1rem}
+.quick{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;align-items:center}
+.quick small{color:var(--muted);font-size:.8rem;margin-right:.25rem}
+.pill{background:var(--card);border:1px solid var(--line);color:var(--text2);font-size:.82rem;padding:.4rem .9rem;border-radius:999px;transition:all .18s}
+.pill:hover{border-color:var(--pink);color:#fff;background:rgba(244,63,142,.12);transform:translateY(-1px)}
+
+/* ---------- genre of the day ---------- */
+.gotd{margin-top:2.5rem;border-radius:26px;padding:1.5px;background:var(--grad)}
+.gotd-in{display:grid;grid-template-columns:1.5fr 1fr;border-radius:25px;overflow:hidden;background:var(--bg2)}
+.gotd-main{padding:2.25rem;cursor:pointer;position:relative}
+.gotd-main::before{content:"";position:absolute;inset:0;background:radial-gradient(500px 260px at 0% 0%,rgba(244,63,142,.16),transparent 70%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--pink);background:rgba(244,63,142,.12);padding:.3rem .7rem;border-radius:999px}
+.gotd h2{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;margin:1rem 0 .4rem;letter-spacing:-.02em}
+.sub-meta{color:var(--muted);font-size:.9rem}
+.gotd p.blurb{color:var(--text2);margin:1rem 0 1.4rem;max-width:520px;position:relative}
+.go{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:#14112b;font-weight:600;font-size:.88rem;border:none;padding:.65rem 1.2rem;border-radius:999px;transition:transform .18s}
+.gotd-main:hover .go{transform:translateX(4px)}
+.gotd-side{padding:2.25rem 1.75rem;background:rgba(255,255,255,.03);border-left:1px solid var(--line)}
+.side-title{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.track{display:flex;gap:.9rem;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--line)}
+.track:last-child{border-bottom:none}
+.track-n{width:2rem;height:2rem;border-radius:10px;background:var(--card2);display:grid;place-items:center;font-size:.8rem;font-weight:600;color:var(--text2);flex-shrink:0}
+.track-t{font-weight:500;font-size:.95rem;line-height:1.25}
+.track-a{color:var(--muted);font-size:.8rem}
+
+/* ---------- section heads ---------- */
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin:3.5rem 0 1.25rem;flex-wrap:wrap}
+.sec-head h3{font-family:var(--display);font-size:1.8rem;letter-spacing:-.015em}
+.sec-head span{color:var(--muted);font-size:.85rem}
+.filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.75rem}
+.filter{background:var(--card);border:1px solid var(--line);color:var(--text2);font-size:.82rem;padding:.4rem .95rem;border-radius:999px;transition:all .18s}
+.filter:hover{border-color:var(--violet)}
+.filter.on{background:var(--grad);border-color:transparent;color:#fff}
+
+/* ---------- genre cards ---------- */
+.fam{margin-bottom:2.25rem}
+.fam-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem}
+.dot{width:10px;height:10px;border-radius:50%;box-shadow:0 0 14px currentColor}
+.fam-head h4{font-size:.95rem;font-weight:600;letter-spacing:.01em}
+.fam-head small{color:var(--muted);font-size:.8rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.9rem}
+.card{
+  position:relative;text-align:left;color:var(--text);
+  background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.2rem 1.2rem 1.1rem;
+  transition:transform .2s,border-color .2s,background .2s,box-shadow .2s;overflow:hidden;
+}
+.card::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:var(--accent,var(--pink));opacity:.85}
+.card:hover{transform:translateY(-4px);background:var(--card2);border-color:var(--accent,var(--pink));box-shadow:0 14px 34px -14px var(--accent,var(--pink))}
+.card-top{display:flex;justify-content:space-between;align-items:start;gap:.6rem}
+.card h5{font-family:var(--display);font-size:1.25rem;line-height:1.2;font-weight:700;letter-spacing:-.01em}
+.era{font-size:.72rem;color:var(--text2);background:var(--card2);padding:.2rem .55rem;border-radius:999px;white-space:nowrap}
+.card .subs{color:var(--muted);font-size:.82rem;margin:.55rem 0 .9rem;min-height:2.6em}
+.card .start{font-size:.8rem;color:var(--text2);display:flex;align-items:center;gap:.5rem}
+.card .start i{font-style:normal;display:grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--accent,var(--pink));color:#14112b;font-size:.6rem}
+
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:4vh 1rem;background:rgba(6,5,16,.72);backdrop-filter:blur(8px);overflow-y:auto}
+.modal.on{display:flex;animation:fade .2s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{position:relative;width:100%;max-width:820px;background:var(--bg2);border:1px solid var(--line);border-radius:26px;padding:2.25rem;box-shadow:0 40px 90px -30px rgba(0,0,0,.8);animation:pop .28s cubic-bezier(.2,.9,.3,1.1)}
+.sheet::before{content:"";position:absolute;inset:0;border-radius:26px;background:radial-gradient(600px 240px at 0% 0%,rgba(244,63,142,.16),transparent 70%);pointer-events:none}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.x{position:absolute;top:1.1rem;right:1.1rem;width:2.2rem;height:2.2rem;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text2);font-size:1rem;z-index:2;transition:all .18s}
+.x:hover{background:var(--pink);border-color:var(--pink);color:#fff}
+.trail{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin-bottom:1.1rem;padding-right:2.5rem;position:relative}
+.trail button{background:none;border:none;color:var(--muted);font-size:.8rem}
+.trail button:hover{color:var(--pink)}
+.trail b{color:var(--text);font-size:.8rem;font-weight:600}
+.trail i{color:var(--line);font-style:normal}
+.kicker{position:relative;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pink)}
+.sheet h2{position:relative;font-family:var(--display);font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.02em;margin:.35rem 0 .6rem}
+.facts{position:relative;display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.fact{font-size:.8rem;color:var(--text2);background:var(--card2);padding:.3rem .8rem;border-radius:999px}
+.fact b{color:var(--text);font-weight:600}
+.sheet .blurb{position:relative;color:var(--text2);font-size:1.02rem;line-height:1.75;max-width:640px;margin-bottom:1.5rem}
+.sec{position:relative;margin-bottom:1.25rem}
+.sec h4{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-size:.85rem;padding:.4rem .95rem;border-radius:999px;border:1px solid;background:none;transition:all .18s}
+button.chip:hover{transform:translateY(-2px);filter:brightness(1.2)}
+.c-par{color:var(--text2);border-color:var(--line);background:var(--card)}
+.c-sub{color:#C4B5FD;border-color:rgba(139,92,246,.45);background:rgba(139,92,246,.12)}
+.c-mic{color:#F9A8D4;border-color:rgba(244,63,142,.45);background:rgba(244,63,142,.1)}
+.c-rel{color:#FDE68A;border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.08)}
+.chip.dead{opacity:.5;border-style:dashed}
+.songs{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.song{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem}
+.song-n{font-size:.72rem;font-weight:600;color:var(--pink);margin-bottom:.4rem}
+.song-t{font-family:var(--display);font-weight:700;font-size:1.02rem;line-height:1.25}
+.song-a{color:var(--muted);font-size:.8rem;margin-top:.2rem}
+.song-y{color:var(--text2);font-size:.75rem;margin-top:.5rem}
+.empty{position:relative;color:var(--text2)}
+
+/* ---------- listening ---------- */
+.lfm{padding-top:3rem}
+.lfm h2{font-family:var(--display);font-size:2.4rem;letter-spacing:-.02em}
+.lfm .lead{color:var(--text2);margin:.4rem 0 1.75rem}
+.box{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:1.75rem;max-width:520px}
+.box label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:.5rem}
+.row{display:flex;gap:.5rem}
+.row input{flex:1;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:.7rem 1rem;font-size:.95rem;outline:none;font-family:var(--sans)}
+.row input:focus{border-color:var(--pink)}
+.btn{background:var(--grad);color:#fff;border:none;font-weight:600;padding:.7rem 1.3rem;border-radius:12px}
+.note{color:var(--muted);font-size:.8rem;margin-top:.9rem}
+.note a{color:var(--pink)}
+.err{color:#FCA5A5;font-size:.85rem;margin-top:.7rem;display:none}
+#lfm-data{display:none}
+.userbar{display:flex;align-items:center;gap:1rem;margin-bottom:2rem}
+.av{width:56px;height:56px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.4rem}
+.userbar h3{font-family:var(--display);font-size:1.5rem}
+.userbar p{color:var(--muted);font-size:.85rem}
+.userbar .btn{margin-left:auto;background:var(--card2);color:var(--text2);font-size:.8rem;padding:.5rem 1rem}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.cols h4{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.lrow{display:flex;align-items:center;gap:.9rem;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--line);color:var(--text);padding:.7rem .3rem;transition:background .15s}
+.lrow:hover{background:var(--card)}
+.lrow .n{width:1.4rem;color:var(--muted);font-size:.8rem;text-align:right}
+.lrow .t{flex:1;font-weight:500}
+.lrow .s{color:var(--muted);font-size:.8rem}
+.lrow .p{color:var(--text2);font-size:.8rem}
+
+/* ---------- charts ---------- */
+.lead-sm{color:var(--text2);max-width:620px;margin:-.5rem 0 1.75rem}
+.charts-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:1.25rem;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:1.4rem 1.4rem 1.2rem}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.9rem}
+.panel-head h4{font-family:var(--display);font-size:1.25rem}
+.panel-head span{color:var(--muted);font-size:.75rem}
+.crow{display:grid;grid-template-columns:2rem 1fr auto;gap:.3rem .8rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:none}
+.crank{font-family:var(--display);font-weight:700;color:var(--muted);text-align:right}
+.crow:nth-child(-n+3) .crank{color:var(--pink)}
+.cname{font-weight:500;line-height:1.25}
+.cname small{display:block;color:var(--muted);font-weight:400;font-size:.8rem}
+.cval{font-size:.85rem;color:var(--text2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cbar{grid-column:2/4;height:4px;border-radius:99px;background:var(--card2);overflow:hidden}
+.cbar i{display:block;height:100%;border-radius:99px;background:var(--grad)}
+.more{margin-top:1rem}
+.import{margin-top:1.5rem;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1rem 1.25rem}
+.import summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--text2)}
+.import p{color:var(--muted);font-size:.85rem;margin:.75rem 0}
+.import textarea{width:100%;min-height:140px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:.8rem 1rem;font-size:.8rem;font-family:ui-monospace,Menlo,Consolas,monospace;outline:none;resize:vertical}
+.import textarea:focus{border-color:var(--pink)}
+.import .row{margin-top:.75rem;flex-wrap:wrap}
+.btn.ghost{background:var(--card2);color:var(--text2)}
+.imsg{font-size:.85rem;margin-top:.75rem;color:var(--text2);min-height:1.2em}
+/* daily tracker */
+.dt-tools{display:flex;flex-wrap:wrap;gap:.5rem 1.75rem;margin-bottom:1rem}
+.dt-tools .filters{margin-bottom:0}
+.dt-note{color:var(--text2);font-size:.85rem;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:.7rem 1rem;margin-bottom:1rem}
+.dt-grid{display:grid;grid-template-columns:2.2rem minmax(0,1fr) 7rem 7rem 6.2rem;gap:0 .9rem;align-items:center}
+.dt-head{padding:.2rem 0 .7rem;border-bottom:1px solid var(--line);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dt-row{padding:.7rem 0;border-bottom:1px solid var(--line)}
+.dt-row:last-child{border-bottom:none}
+.dt-row:nth-child(-n+3) .crank{color:var(--pink)}
+.dt-song{min-width:0}
+.dt-song .t{font-weight:500;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dt-song .a{color:var(--muted);font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{font-size:.65rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--pink);background:rgba(244,63,142,.12);padding:.1rem .45rem;border-radius:999px;margin-left:.35rem;vertical-align:middle}
+.dcell{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dcell b{display:block;font-weight:600;font-size:.92rem}
+.dcell small{display:block;font-size:.72rem}
+.dcell small.pos{color:var(--teal)}
+.dcell small.neg{color:#FCA5A5}
+@media(max-width:760px){.charts-grid{grid-template-columns:1fr}.dt-grid{grid-template-columns:1.6rem minmax(0,1fr) 5.6rem 5.6rem}.c-likes{display:none}}
+
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:.82rem;text-align:center;padding:2rem 1rem}
+
+@media(max-width:760px){
+  .gotd-in{grid-template-columns:1fr}
+  .gotd-side{border-left:none;border-top:1px solid var(--line)}
+  .songs{grid-template-columns:1fr}
+  .cols{grid-template-columns:1fr}
+  .hsearch{margin-left:0;width:100%;order:3}
+  .sheet{padding:1.5rem}
+}
+
+/* ================= DATA THEME (flat, light, dense) ================= */
+.wrap{max-width:1040px;padding:0 1rem}
+*{animation:none!important;transition:none!important}
+header{position:static;backdrop-filter:none;background:#fff;border-bottom:3px solid transparent;border-image:var(--grad) 1}
+.head{padding:.6rem 0;gap:1rem}
+.logo{font-size:1.9rem}
+.tabs{background:none;border:none;border-radius:0;padding:0;gap:2px}
+.tab{background:#14141c;color:#fff;border-radius:0;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.5rem 1.1rem}
+.tab:hover{background:#3a3a48;color:#fff}
+.tab.on{background:var(--grad);color:#fff}
+.hsearch{border-radius:0;background:#fff;border:1px solid #14141c;padding:0;min-width:240px}
+.hsearch:focus-within{box-shadow:none;border-color:var(--pink)}
+.hsearch input{padding:.45rem .6rem;font-size:.82rem}
+.hsearch button{border-radius:0;background:#14141c;padding:.5rem .9rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+
+.hero{padding:1.5rem 0 .5rem}
+.hero h1{font-family:var(--sans);font-size:1.6rem;letter-spacing:0;line-height:1.2;max-width:none}
+.hero h1 em{background:none;-webkit-text-fill-color:initial;color:var(--pink);font-style:normal}
+.hero p{font-size:.9rem;margin-top:.4rem;max-width:none;color:var(--text2)}
+.quick{margin-top:.8rem;gap:.35rem}
+.pill,.filter{border-radius:0;background:#fff;border:1px solid var(--line);color:var(--text);font-size:.75rem;padding:.3rem .7rem}
+.pill:hover{background:var(--card2);border-color:#14141c;color:var(--text);transform:none}
+.filters{gap:2px;margin-bottom:1rem}
+.filter{background:var(--card2);border-color:transparent}
+.filter:hover{background:#e0e0e8;border-color:transparent}
+.filter.on{background:#14141c;color:#fff;border-color:transparent}
+
+.gotd{margin-top:1.25rem;border-radius:0;padding:0;background:none;border:1px solid var(--line)}
+.gotd-in{border-radius:0;background:#fff;grid-template-columns:1.4fr 1fr}
+.gotd-main{padding:1.1rem 1.25rem}
+.gotd-main::before{display:none}
+.badge{border-radius:0;background:var(--pink);color:#fff;font-size:.65rem;padding:.2rem .5rem}
+.gotd h2{font-family:var(--sans);font-size:1.7rem;margin:.6rem 0 .2rem;letter-spacing:0}
+.gotd p.blurb{font-size:.88rem;margin:.6rem 0 .9rem}
+.go{border-radius:0;background:#14141c;color:#fff;font-size:.75rem;padding:.45rem .9rem;text-transform:uppercase;letter-spacing:.04em}
+.gotd-main:hover .go{transform:none;background:var(--pink)}
+.gotd-side{padding:1.1rem 1.25rem;background:var(--bg2);border-left:1px solid var(--line)}
+.side-title{font-size:.68rem;margin-bottom:.4rem}
+.track{padding:.4rem 0}
+.track-n{border-radius:0;width:1.5rem;height:1.5rem;font-size:.72rem;background:#14141c;color:#fff}
+.track-t{font-size:.85rem}
+
+.sec-head{margin:1.75rem 0 .6rem;border-bottom:2px solid #14141c;padding-bottom:.3rem}
+.sec-head h3{font-family:var(--sans);font-size:1.05rem;letter-spacing:.02em;text-transform:uppercase}
+.sec-head span{font-size:.75rem}
+.lead-sm{margin:0 0 .9rem;font-size:.82rem;max-width:none}
+
+.fam{margin-bottom:1.25rem}
+.fam-head{border-bottom:1px solid var(--line);padding-bottom:.3rem;margin-bottom:.5rem}
+.dot{border-radius:0;width:10px;height:10px;box-shadow:none}
+.fam-head h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.card{border-radius:0;border:none;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:.6rem .75rem;background:#fff}
+.card::before{width:3px;height:auto;right:auto;bottom:0;opacity:1}
+.card:hover{transform:none;box-shadow:none;background:var(--bg2);border-color:var(--line);border-right:1px solid var(--line)}
+.card h5{font-family:var(--sans);font-size:.9rem;letter-spacing:0}
+.era{border-radius:0;font-size:.65rem;background:var(--card2)}
+.card .subs{font-size:.72rem;margin:.25rem 0 .35rem;min-height:0}
+.card .start{font-size:.72rem}
+.card .start i{border-radius:0;width:1.1rem;height:1.1rem;color:#fff}
+
+.modal{background:rgba(20,20,28,.55);backdrop-filter:none;padding:3vh 1rem}
+.sheet{border-radius:0;background:#fff;border:2px solid #14141c;box-shadow:none;padding:1.5rem}
+.sheet::before{display:none}
+.x{border-radius:0;background:#14141c;color:#fff;border-color:#14141c}
+.x:hover{background:var(--pink);border-color:var(--pink)}
+.sheet h2{font-family:var(--sans);font-size:2rem;letter-spacing:0}
+.fact{border-radius:0;font-size:.75rem}
+.sheet .blurb{font-size:.9rem;line-height:1.6}
+.sec h4{font-size:.68rem}
+.chip{border-radius:0;font-size:.78rem;padding:.25rem .65rem}
+button.chip:hover{transform:none;filter:none;background:var(--card2)}
+.c-par{color:var(--text);border-color:var(--line);background:#fff}
+.c-sub{color:#5B21B6;border-color:#C4B5FD;background:#F5F0FF}
+.c-mic{color:#9D174D;border-color:#F9A8D4;background:#FFF0F6}
+.c-rel{color:#7A5200;border-color:#E9C46A;background:#FFF8E6}
+.songs{gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.song{border-radius:0;border:none;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:.6rem .75rem}
+.song-t{font-family:var(--sans);font-size:.88rem}
+
+.lfm{padding-top:1.5rem}
+.lfm h2{font-family:var(--sans);font-size:1.3rem;letter-spacing:0;text-transform:uppercase}
+.box,.panel,.import,.dt-note{border-radius:0;background:#fff;border:1px solid var(--line)}
+.box{padding:1rem}
+.row input,.import textarea{border-radius:0;background:#fff;border:1px solid #14141c}
+.btn{border-radius:0;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;background:#14141c;padding:.55rem 1rem}
+.btn.ghost,.userbar .btn{background:var(--card2);color:var(--text)}
+.err{color:#B91C1C}
+.av{border-radius:0;color:#fff}
+.userbar h3,.panel-head h4{font-family:var(--sans)}
+.panel{padding:.8rem 1rem}
+.panel-head h4{font-size:.9rem;text-transform:uppercase;letter-spacing:.03em}
+.cols h4{font-size:.68rem}
+.lrow{padding:.4rem .3rem}
+.lrow:hover{background:var(--bg2)}
+
+/* tables: striped, tight, tabular numbers */
+.crow{padding:.35rem .4rem;gap:.1rem .7rem}
+.crow:nth-child(odd){background:var(--bg2)}
+.crank{font-family:var(--sans);font-size:.8rem}
+.cname{font-size:.85rem}
+.cval{font-size:.8rem}
+.cbar{height:3px;border-radius:0;background:var(--card2)}
+.cbar i{border-radius:0}
+.charts-grid{gap:1rem}
+.dt-grid{grid-template-columns:2.2rem minmax(0,1fr) 9rem 9.5rem 8rem;gap:0 .7rem}
+.dt-head{background:#14141c;color:#fff;padding:.4rem .4rem;border-bottom:none;font-size:.66rem}
+.dt-row{padding:.35rem .4rem}
+.dt-row:nth-child(odd){background:var(--bg2)}
+.dt-song .t{font-size:.85rem}
+.dcell b{font-size:.82rem;font-weight:700}
+.dcell small{font-size:.68rem}
+.dcell small.pos{color:#0F7A3A}
+.dcell small.neg{color:#B91C1C}
+.tag{border-radius:0;background:var(--pink);color:#fff;font-size:.6rem;padding:.05rem .35rem}
+.dt-tools{gap:.4rem 1.25rem;margin-bottom:.6rem}
+.dt-note{font-size:.78rem;padding:.5rem .75rem}
+.panel .dt-head{margin:0 -.4rem}
+.import{padding:.6rem .9rem}
+footer{font-size:.75rem;border-top:1px solid var(--line)}
+@media(max-width:760px){.gotd-in{grid-template-columns:1fr}.gotd-side{border-left:none;border-top:1px solid var(--line)}.dt-grid{grid-template-columns:1.6rem minmax(0,1fr) 5.6rem 5.6rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head">
+    <button class="logo" data-home>Genre<span>base</span></button>
+    <nav class="tabs">
+      <button class="tab on" data-view="home">Home</button>
+      <button class="tab" data-view="index">Genre Index</button>
+      <button class="tab" data-view="charts">Charts</button>
+      <button class="tab" data-view="listening">My Listening</button>
+    </nav>
+    <form class="hsearch" id="search-form">
+      <input id="q" type="text" placeholder="Search an artist or genre" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HOME -->
+  <section class="view on" id="view-home">
+    <div class="hero">
+      <h1>Every genre, <em>mapped.</em></h1>
+      <p>Look up an artist or a genre. See where it came from, what it spawned and what sits next door.</p>
+      <div class="quick" id="quick">
+        <small>Try</small>
+      </div>
+    </div>
+
+    <div class="gotd"><div class="gotd-in" id="gotd"></div></div>
+
+    <div class="sec-head"><h3>Browse the index</h3><span id="home-count"></span></div>
+    <div class="filters" id="home-filters"></div>
+    <div id="home-grid"></div>
+  </section>
+
+  <!-- INDEX -->
+  <section class="view" id="view-index">
+    <div class="sec-head" style="margin-top:3rem"><h3>Genre Index</h3><span id="idx-count"></span></div>
+    <div class="filters" id="idx-filters"></div>
+    <div id="idx-grid"></div>
+  </section>
+
+  <!-- CHARTS -->
+  <section class="view" id="view-charts">
+    <div class="sec-head" style="margin-top:3rem"><h3>Daily tracker</h3><span id="dt-updated"></span></div>
+    <p class="lead-sm">Totals and daily change for the biggest songs and your own top tracks. Plays come from Last.fm. Views and likes come from YouTube. A job refreshes them once a day.</p>
+    <div id="dt-empty" class="panel" style="display:none"></div>
+    <div id="dt-wrap" style="display:none">
+      <div class="dt-tools">
+        <div class="filters" id="dt-sort"></div>
+        <div class="filters" id="dt-set"></div>
+      </div>
+      <div class="dt-note" id="dt-note" style="display:none"></div>
+      <div class="panel">
+        <div class="dt-grid dt-head"><div></div><div>Song</div><div class="dcell">Last.fm plays</div><div class="dcell">YouTube views</div><div class="dcell c-likes">YouTube likes</div></div>
+        <div id="dt-rows"></div>
+        <button class="pill more" id="dt-more"></button>
+      </div>
+    </div>
+
+    <div class="sec-head"><h3>All-time Spotify leaders</h3><span>Wikipedia snapshot or your kworb paste</span></div>
+    <p class="lead-sm">Lifetime totals. Paste a kworb table at the bottom to swap in exact kworb counts.</p>
+    <div class="charts-grid">
+      <div class="panel">
+        <div class="panel-head"><h4>Most streamed songs</h4><span id="ch-songs-src"></span></div>
+        <div id="ch-songs"></div>
+        <button class="pill more" id="ch-more"></button>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h4 id="ch-art-title">Most streamed artists</h4><span id="ch-art-src"></span></div>
+        <div id="ch-artists"></div>
+      </div>
+    </div>
+    <details class="import">
+      <summary>Swap in kworb data</summary>
+      <p>Open kworb.net/spotify in your browser. Open the songs or artists page. Select the table, copy it and paste it here. Then pick which list it is. It is saved in this browser.</p>
+      <textarea id="ch-paste" placeholder="Paste table rows here"></textarea>
+      <div class="row">
+        <button class="btn" id="ch-imp-songs">Use as songs</button>
+        <button class="btn" id="ch-imp-art">Use as artists</button>
+        <button class="btn ghost" id="ch-reset">Reset to built-in data</button>
+      </div>
+      <div class="imsg" id="ch-msg"></div>
+    </details>
+  </section>
+
+  <!-- LISTENING -->
+  <section class="view" id="view-listening">
+    <div class="lfm">
+      <h2>My Listening</h2>
+      <p class="lead">Your Last.fm history. It scrobbles from both Spotify and Apple Music.</p>
+      <div id="lfm-connect" class="box">
+        <label for="lfm-in">Last.fm username</label>
+        <div class="row">
+          <input id="lfm-in" type="text" placeholder="username">
+          <button class="btn" id="lfm-go">Connect</button>
+        </div>
+        <div class="err" id="lfm-err"></div>
+        <p class="note">You need a free API key from <a href="https://www.last.fm/api/account/create" target="_blank" rel="noopener">last.fm/api</a>. Paste it into the LFM_KEY line in this file.</p>
+      </div>
+      <div id="lfm-data">
+        <div class="userbar">
+          <div class="av" id="lfm-av"></div>
+          <div><h3 id="lfm-name"></h3><p id="lfm-stats"></p></div>
+          <button class="btn" id="lfm-off">Disconnect</button>
+        </div>
+        <div class="cols">
+          <div><h4>Top artists, all time</h4><div id="lfm-artists"></div></div>
+          <div><h4>Recent tracks</h4><div id="lfm-recent"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Genrebase. A passion project for music and data lovers.</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<!-- Daily numbers written by scripts/update.mjs. Safe if the file is missing. -->
+<script src="data/latest.js"></script>
+
+<script>
+/* =========================================================
+   DATA  (all stored here, no API needed)
+   ========================================================= */
+var LFM_KEY = 'YOUR_LASTFM_API_KEY';
+
+var CAT = {
+  "Hip-Hop & R&B":"#F43F8E",
+  "Electronic":"#2DD4BF",
+  "Rock & Alternative":"#8B5CF6",
+  "Jazz":"#FBBF24",
+  "Soul & Funk":"#FB923C",
+  "Global":"#4ADE80",
+  "Country & Folk":"#A3E635",
+  "Pop":"#F9A8D4",
+  "Classical & Experimental":"#38BDF8"
+};
+
+var GENRES = [
+ {cat:"Hip-Hop & R&B",name:"Hip-Hop",sub:"Boom Bap · Trap · Drill · Cloud Rap",era:"1970s",b:"Born in the Bronx in the 1970s from DJs looping breaks and MCs rhyming over them. It grew into the most influential popular genre of the last forty years.",songs:["Rapper's Delight — Sugarhill Gang","The World Is Yours — Nas","C.R.E.A.M. — Wu-Tang Clan"]},
+ {cat:"Hip-Hop & R&B",name:"Trap",sub:"Drill · Mumble Rap · Plugg · Emo Rap",era:"2000s",b:"Southern hip-hop built on skittering hi-hats, booming 808s and hard-edged storytelling. It came out of Atlanta and took over the charts.",songs:["Antidote — Travis Scott","Mask Off — Future","Bad and Boujee — Migos"]},
+ {cat:"Hip-Hop & R&B",name:"Conscious Hip-Hop",sub:"Jazz Rap · Political Rap · Afrocentric",era:"1980s",b:"Rap that leads with ideas. Social critique, personal reflection and dense writing matter more than club appeal.",songs:["The Message — Grandmaster Flash","Me, Myself and I — De La Soul","All Falls Down — Kanye West"]},
+ {cat:"Hip-Hop & R&B",name:"R&B",sub:"Neo-Soul · Alternative R&B · Contemporary",era:"1940s",b:"Rhythm and blues grew into a smooth, vocal-driven form built on gospel, soul and groove. It has reinvented its sound in every decade since the 1940s.",songs:["I Will Always Love You — Whitney Houston","No Scrubs — TLC","Crazy in Love — Beyoncé"]},
+ {cat:"Hip-Hop & R&B",name:"Neo-Soul",sub:"Alternative R&B · Quiet Storm · Lo-fi Soul",era:"1990s",b:"A 1990s return to live instruments, jazz harmony and personal songwriting in Black pop. D'Angelo, Erykah Badu and Jill Scott set the template.",songs:["On & On — Erykah Badu","Brown Sugar — D'Angelo","He Loves Me — Jill Scott"]},
+
+ {cat:"Electronic",name:"House",sub:"Deep House · Chicago House · UK Garage",era:"1980s",b:"Four-on-the-floor dance music from Chicago clubs in the early 1980s. Warm bass, drum machines and a long build define it.",songs:["Move Your Body — Marshall Jefferson","Your Love — Frankie Knuckles","Finally — Ce Ce Peniston"]},
+ {cat:"Electronic",name:"Techno",sub:"Detroit Techno · Acid · Minimal · Industrial",era:"1980s",b:"Detroit's futurist answer to house. Colder, more mechanical and built for long hypnotic sets.",songs:["Strings of Life — Rhythim Is Rhythim","Good Life — Inner City","Planet Rock — Afrika Bambaataa"]},
+ {cat:"Electronic",name:"Drum & Bass",sub:"Jungle · Liquid DnB · Neurofunk",era:"1990s",b:"Frenetic breakbeats near 170 BPM paired with deep sub-bass. It grew out of UK jungle in the mid 1990s.",songs:["Inner City Life — Goldie","Brown Paper Bag — Roni Size","Music — Amon Tobin"]},
+ {cat:"Electronic",name:"Ambient",sub:"Dark Ambient · Drone · New Age",era:"1970s",b:"Music meant to work as atmosphere as much as foreground. Brian Eno gave it a name in the late 1970s.",songs:["1/1 — Brian Eno","Weightless — Marconi Union","Avril 14th — Aphex Twin"]},
+ {cat:"Electronic",name:"Hyperpop",sub:"PC Music · Digicore · Bubblegum Bass",era:"2010s",b:"Pop pushed past comfort with pitched vocals, distorted bass and a wink at its own artifice. PC Music and 100 gecs carried it toward the mainstream.",songs:["Vroom Vroom — Charli XCX","Hello — Rina Sawayama","Ringtone — 100 gecs"]},
+ {cat:"Electronic",name:"Trip-Hop",sub:"Downtempo · Bristol Sound · Cinematic",era:"1990s",b:"Slowed hip-hop beats, film-noir samples and hushed vocals from Bristol in the early 1990s. Made for headphones, not dance floors.",songs:["Teardrop — Massive Attack","Sour Times — Portishead","Glory Box — Portishead"]},
+ {cat:"Electronic",name:"UK Garage",sub:"2-Step · Grime · Post-Dubstep",era:"1990s",b:"London's skippy 2-step take on house, with chopped vocals and heavy bass. It fed directly into grime and dubstep.",songs:["Re-Rewind — Artful Dodger","Fill Me In — Craig David","Flowers — Sweet Female Attitude"]},
+ {cat:"Electronic",name:"Grime",sub:"Eskibeat · Road Rap · Grindie",era:"2000s",b:"Fast, abrasive and confrontational. It mutated out of UK Garage in East London around 2002 and runs near 140 BPM.",songs:["Boy in da Corner — Dizzee Rascal","Pulse X — Wiley","Shut Up — Stormzy"]},
+
+ {cat:"Rock & Alternative",name:"Indie Rock",sub:"Indie Pop · Shoegaze · Lo-fi · Math Rock",era:"1980s",b:"Guitar music made outside the major label system. The term now covers everything from jangle pop to lo-fi bedroom recordings.",songs:["There Is a Light — The Smiths","Losing My Religion — R.E.M.","Last Nite — The Strokes"]},
+ {cat:"Rock & Alternative",name:"Post-Punk",sub:"Goth Rock · No Wave · Cold Wave",era:"1970s",b:"Punk's energy turned toward art, dub and dread. Angular guitars and a cold atmosphere mark the sound.",songs:["Love Will Tear Us Apart — Joy Division","The Killing Moon — Echo & the Bunnymen","This Charming Man — The Smiths"]},
+ {cat:"Rock & Alternative",name:"Shoegaze",sub:"Dream Pop · Noise Pop · Blackgaze",era:"1980s",b:"Walls of reverb-soaked guitar with vocals buried in the mix. It was named for players staring down at their effects pedals.",songs:["Only Shallow — My Bloody Valentine","Sometimes — My Bloody Valentine","When the Sun Hits — Slowdive"]},
+ {cat:"Rock & Alternative",name:"Metal",sub:"Heavy · Death · Black · Doom · Post-Metal",era:"1970s",b:"Heavy, riff-driven music that started with Black Sabbath. It has split into dozens of extreme and technical branches.",songs:["Black Sabbath — Black Sabbath","Master of Puppets — Metallica","Paranoid — Black Sabbath"]},
+ {cat:"Rock & Alternative",name:"Punk",sub:"Hardcore · Post-Hardcore · Pop Punk",era:"1970s",b:"Fast, short and loud, built on a do-it-yourself attitude. The Ramones, Sex Pistols and The Clash defined the first wave.",songs:["Anarchy in the U.K. — Sex Pistols","London Calling — The Clash","Blitzkrieg Bop — Ramones"]},
+
+ {cat:"Jazz",name:"Jazz",sub:"Bebop · Free Jazz · Fusion · Modal",era:"1900s",b:"America's improvised art form, rooted in blues and ragtime. Nearly every popular genre since has borrowed from it.",songs:["So What — Miles Davis","Take Five — Dave Brubeck","Autumn Leaves — Bill Evans"]},
+ {cat:"Jazz",name:"Bebop",sub:"Hard Bop · Post-Bop · Cool Jazz",era:"1940s",b:"Fast tempos, dense harmony and virtuosic soloing. It was a 1940s move to make jazz for listeners rather than dancers.",songs:["Ko-Ko — Charlie Parker","A Night in Tunisia — Dizzy Gillespie","Round Midnight — Thelonious Monk"]},
+ {cat:"Jazz",name:"Free Jazz",sub:"Avant-Garde · Spiritual Jazz · Noise",era:"1950s",b:"Jazz without fixed chords or meter. Ornette Coleman started it and late Coltrane pushed it toward the spiritual.",songs:["Lonely Woman — Ornette Coleman","A Love Supreme — John Coltrane","Ascension — John Coltrane"]},
+ {cat:"Jazz",name:"Jazz Fusion",sub:"Acid Jazz · Nu-Jazz · Smooth Jazz",era:"1970s",b:"Jazz harmony and improvisation mixed with rock power and funk grooves. It took off in the early 1970s.",songs:["Birdland — Weather Report","Spain — Chick Corea","Chameleon — Herbie Hancock"]},
+
+ {cat:"Soul & Funk",name:"Soul",sub:"Southern Soul · Philly Soul · Psychedelic",era:"1950s",b:"Gospel feeling brought into secular music. Aretha Franklin, Sam Cooke and Marvin Gaye are the cornerstones.",songs:["Respect — Aretha Franklin","A Change Is Gonna Come — Sam Cooke","What's Going On — Marvin Gaye"]},
+ {cat:"Soul & Funk",name:"Funk",sub:"P-Funk · Go-Go · New Jack Swing",era:"1960s",b:"Rhythm as the main event. James Brown put the emphasis on the one and the genre built outward from there.",songs:["Superstition — Stevie Wonder","Sex Machine — James Brown","Flash Light — Parliament"]},
+ {cat:"Soul & Funk",name:"Gospel",sub:"Contemporary · Southern · Choir",era:"1930s",b:"Sacred Black American music built on call and response and powerful choirs. It shaped soul, R&B and rock.",songs:["Oh Happy Day — Edwin Hawkins Singers","Take My Hand, Precious Lord — Mahalia Jackson","Stomp — Kirk Franklin"]},
+
+ {cat:"Global",name:"Afrobeat",sub:"Afropop · Afrofusion · Highlife · Jùjú",era:"1960s",b:"Fela Kuti's fusion of Yoruba music, highlife, jazz and funk, with long grooves and sharp political lyrics.",songs:["Zombie — Fela Kuti","Lady — Fela Kuti","Water No Get Enemy — Fela Kuti"]},
+ {cat:"Global",name:"Reggae",sub:"Dancehall · Dub · Rocksteady · Roots",era:"1960s",b:"Jamaican music built on offbeat guitar chops and heavy bass. It grew from ska and rocksteady in the late 1960s.",songs:["No Woman, No Cry — Bob Marley","Rivers of Babylon — The Melodians","Pressure Drop — Toots & the Maytals"]},
+ {cat:"Global",name:"Latin",sub:"Salsa · Reggaeton · Bossa Nova · Cumbia",era:"1940s",b:"A wide family of styles from across Latin America and the Caribbean, from salsa and bossa nova to reggaeton.",songs:["Conga — Miami Sound Machine","Livin' la Vida Loca — Ricky Martin","La Bamba — Ritchie Valens"]},
+ {cat:"Global",name:"Afrobeats",sub:"Amapiano · Afropop · AltAfro · Alte",era:"2000s",b:"The modern West African pop sound, not to be confused with Afrobeat. It mixes highlife, hip-hop and dancehall.",songs:["Essence — Wizkid ft. Tems","Last Last — Burna Boy","Ojuelegba — Wizkid"]},
+ {cat:"Global",name:"K-Pop",sub:"K-Hip-Hop · K-R&B · K-Indie · Idol Pop",era:"1990s",b:"South Korean pop built on polished production, tight choreography and a trainee system. It went global in the 2010s.",songs:["Dynamite — BTS","How You Like That — BLACKPINK","Gee — Girls' Generation"]},
+
+ {cat:"Country & Folk",name:"Country",sub:"Outlaw · Bluegrass · Alt-Country",era:"1920s",b:"American roots music from the rural South, built on storytelling, steel guitar and fiddle.",songs:["Ring of Fire — Johnny Cash","Jolene — Dolly Parton","I Will Always Love You — Dolly Parton"]},
+ {cat:"Country & Folk",name:"Folk",sub:"Indie Folk · Anti-Folk · Singer-Songwriter",era:"1940s",b:"Acoustic songwriting rooted in traditional song. It has carried protest, poetry and personal confession.",songs:["The Times They Are A-Changin' — Bob Dylan","Both Sides Now — Joni Mitchell","Blowin' in the Wind — Bob Dylan"]},
+ {cat:"Country & Folk",name:"Bluegrass",sub:"Progressive · Newgrass · Old-Time",era:"1940s",b:"Fast acoustic string band music with banjo, fiddle and high harmonies. Bill Monroe set the template in the 1940s.",songs:["Rocky Top — Osborne Brothers","Man of Constant Sorrow — Stanley Brothers","Foggy Mountain Breakdown — Flatt & Scruggs"]},
+
+ {cat:"Pop",name:"Pop",sub:"Synth-Pop · Art Pop · Electropop",era:"1950s",b:"Music built for broad appeal. Hooks and polish matter most and the sound shifts with every era.",songs:["Like a Prayer — Madonna","Billie Jean — Michael Jackson","Baby One More Time — Britney Spears"]},
+ {cat:"Pop",name:"Synth-Pop",sub:"New Wave · Electropop · Coldwave",era:"1970s",b:"Pop built around synthesizers and drum machines. It took off at the end of the 1970s and defined 1980s radio.",songs:["Blue Monday — New Order","Just Can't Get Enough — Depeche Mode","Don't You Want Me — Human League"]},
+
+ {cat:"Classical & Experimental",name:"Classical",sub:"Baroque · Romantic · Contemporary",era:"Pre-1900",b:"Western art music, from the Baroque through the Romantic era and into the modern day.",songs:["Moonlight Sonata — Beethoven","The Four Seasons — Vivaldi","Clair de Lune — Debussy"]},
+ {cat:"Classical & Experimental",name:"Experimental",sub:"Noise · Avant-Garde · Drone",era:"1950s",b:"Music that rejects genre rules on purpose. Noise, chance and unusual sound sources are all fair game.",songs:["Revolution 9 — The Beatles","4'33\" — John Cage","Music for 18 Musicians — Steve Reich"]},
+ {cat:"Classical & Experimental",name:"Minimalism",sub:"Drone · Neo-Minimalism · Ambient Classical",era:"1960s",b:"Repeating patterns that shift slowly over time. Steve Reich, Terry Riley and Philip Glass made it a major movement.",songs:["Discreet Music — Brian Eno","In C — Terry Riley","Piano Phase — Steve Reich"]}
+];
+
+var ARTISTS = {
+ "Frank Ocean":{g:"Alternative R&B",o:"New Orleans, USA",e:"2010s",b:"Alternative R&B pairs soul vocals with sparse, experimental production and diary-like lyrics. Frank Ocean pushed it toward art pop and treated the album as a story rather than a set of singles.",p:["R&B","Neo-Soul"],s:["Indie R&B","Quiet Storm","Lo-fi Soul"],m:["Bedroom R&B","Avant-Soul"],r:["Chillwave","Indie Pop","Contemporary Jazz"],songs:[{t:"Pyramids",y:"2012"},{t:"Nights",y:"2016"},{t:"Pink Matter",y:"2012"}]},
+ "Burial":{g:"Post-Dubstep",o:"London, UK",e:"2000s",b:"Post-dubstep is UK Garage filtered through grief. Late-night bus rides, empty dance floors and 2-step rhythms sit under vinyl crackle and half-heard vocal chops.",p:["UK Garage","Electronic"],s:["Dubstep","Ambient","Dark Garage"],m:["Hauntology","Ghost Techno"],r:["Trip-Hop","Jungle","Grime"],songs:[{t:"Archangel",y:"2007"},{t:"Raver",y:"2007"},{t:"Shell of Light",y:"2007"}]},
+ "Kendrick Lamar":{g:"Conscious Hip-Hop",o:"Compton, USA",e:"2010s",b:"Conscious hip-hop puts social commentary and narrative depth ahead of commercial hooks. Kendrick draws on West Coast storytelling and pulls in jazz, funk and spoken word.",p:["Hip-Hop","West Coast Hip-Hop"],s:["Jazz Rap","Political Rap","Afrocentric Hip-Hop"],m:["Neo-Conscious","Compton Rap"],r:["Neo-Soul","Spoken Word","Experimental Hip-Hop"],songs:[{t:"Alright",y:"2015"},{t:"Money Trees",y:"2012"},{t:"HiiiPower",y:"2011"}]},
+ "Charli XCX":{g:"Hyperpop",o:"Cambridge, UK",e:"2010s",b:"Hyperpop stretches pop to its limits with maximal production, pitched vocals and blown-out bass. Charli XCX helped carry it from PC Music's art-world roots into the mainstream.",p:["Electropop","Art Pop"],s:["PC Music","Bubblegum Bass","Glitch Pop"],m:["Digicore","Emo Pop"],r:["Dance-Pop","Indie Pop","Electronic"],songs:[{t:"360",y:"2024"},{t:"Gone",y:"2019"},{t:"Vroom Vroom",y:"2016"}]},
+ "John Coltrane":{g:"Free Jazz",o:"Hamlet, USA",e:"1960s",b:"Free jazz dropped fixed chord progressions and standard meter. Coltrane's late period pushed it toward the spiritual and treated improvisation as a route to transcendence.",p:["Jazz","Bebop"],s:["Avant-Garde Jazz","Spiritual Jazz","Post-Bop"],m:["Modal Jazz","Sheet of Sound"],r:["Contemporary Classical","Experimental","Soul Jazz"],songs:[{t:"A Love Supreme, Pt. I",y:"1964"},{t:"Ascension",y:"1965"},{t:"My Favorite Things",y:"1961"}]},
+ "Massive Attack":{g:"Trip-Hop",o:"Bristol, UK",e:"1990s",b:"Trip-hop came out of Bristol's post-rave scene with slowed hip-hop tempos and samples from soul and film noir. Massive Attack gave it its cinematic mood.",p:["Hip-Hop","Electronic"],s:["Downtempo","Ambient Pop","Dark Ambient"],m:["Bristol Sound","Cinematic Soul"],r:["Post-Dubstep","Neo-Soul","Industrial"],songs:[{t:"Teardrop",y:"1998"},{t:"Unfinished Sympathy",y:"1991"},{t:"Angel",y:"1998"}]},
+ "Fela Kuti":{g:"Afrobeat",o:"Lagos, Nigeria",e:"1970s",b:"Afrobeat blended Yoruba music with jazz and funk and carried sharp political commentary in pidgin English. Fela's songs often ran past twenty minutes on a relentless groove.",p:["Highlife","Jazz","Funk"],s:["Afropop","Afrofusion","Afrojuju"],m:["Lagos Funk","Pan-African Beat"],r:["Soul","Reggae","Jùjú"],songs:[{t:"Zombie",y:"1976"},{t:"Lady",y:"1972"},{t:"Water No Get Enemy",y:"1975"}]}
+};
+
+var GOTD_POOL = ["Afrobeats","Trip-Hop","Free Jazz","Hyperpop","Neo-Soul","Grime","Bebop","Shoegaze","Funk","Techno"];
+var QUICK = ["Frank Ocean","Burial","Kendrick Lamar","Charli XCX","John Coltrane","Massive Attack","Fela Kuti"];
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function norm(s){return String(s).toLowerCase().replace(/[^a-z0-9]/g,'');}
+function parseSong(s){var i=s.lastIndexOf(' — ');return {t:s.slice(0,i),a:s.slice(i+3)};}
+
+function find(label){
+  var k=norm(label);
+  if(!k) return null;
+  var i,n;
+  for(i=0;i<GENRES.length;i++) if(norm(GENRES[i].name)===k) return {type:'genre',d:GENRES[i]};
+  for(n in ARTISTS) if(norm(n)===k) return {type:'artist',name:n,d:ARTISTS[n]};
+  if(k.length>=4){
+    for(n in ARTISTS) if(norm(n).indexOf(k)>-1) return {type:'artist',name:n,d:ARTISTS[n]};
+    for(i=0;i<GENRES.length;i++) if(norm(GENRES[i].name).indexOf(k)>-1) return {type:'genre',d:GENRES[i]};
+  }
+  return null;
+}
+
+function siblings(g){
+  return GENRES.filter(function(x){return x.cat===g.cat&&x.name!==g.name;}).map(function(x){return x.name;}).slice(0,6);
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+var hist=[];
+
+function chips(list,cls){
+  return list.map(function(l){
+    return find(l)
+      ? '<button class="chip '+cls+'" data-open="'+esc(l)+'">'+esc(l)+'</button>'
+      : '<span class="chip '+cls+' dead" title="Not in the index yet">'+esc(l)+'</span>';
+  }).join('');
+}
+function sec(title,html){return html?'<div class="sec"><h4>'+title+'</h4><div class="chips">'+html+'</div></div>':'';}
+function songsHtml(list){
+  if(!list||!list.length) return '';
+  return '<div class="sec"><h4>Essential listening</h4><div class="songs">'+list.slice(0,3).map(function(s,i){
+    return '<div class="song"><div class="song-n">0'+(i+1)+'</div><div class="song-t">'+esc(s.t)+'</div>'
+      +(s.a?'<div class="song-a">'+esc(s.a)+'</div>':'')
+      +(s.y?'<div class="song-y">'+esc(s.y)+'</div>':'')+'</div>';
+  }).join('')+'</div></div>';
+}
+function trailHtml(){
+  if(hist.length<2) return '';
+  return '<div class="trail">'+hist.map(function(h,i){
+    var last=i===hist.length-1;
+    return (last?'<b>'+esc(h)+'</b>':'<button data-open="'+esc(h)+'" data-nopush="1">'+esc(h)+'</button><i>/</i>');
+  }).join('')+'</div>';
+}
+
+function openEntry(label,push){
+  if(push!==false){
+    if(hist[hist.length-1]!==label) hist.push(label);
+    if(hist.length>6) hist.shift();
+  }
+  var e=find(label), h=trailHtml()+'';
+  var body;
+  if(!e){
+    var k=norm(label);
+    var sug=GENRES.filter(function(g){return k&&(norm(g.name).indexOf(k)>-1||norm(g.sub).indexOf(k)>-1);}).map(function(g){return g.name;}).slice(0,6);
+    body=h+'<div class="kicker">No match</div><h2>'+esc(label)+'</h2>'
+      +'<p class="empty">That one is not in the index yet.'+(sug.length?' These are close:':' Try a genre name or one of the featured artists.')+'</p>'
+      +(sug.length?'<div class="sec" style="margin-top:1rem"><div class="chips">'+chips(sug,'c-rel')+'</div></div>':'');
+  } else if(e.type==='genre'){
+    var g=e.d, sub=g.sub.split(' · ');
+    body=h+'<div class="kicker">Genre</div><h2>'+esc(g.name)+'</h2>'
+      +'<div class="facts"><span class="fact"><b>Era</b> '+esc(g.era)+'</span><span class="fact"><b>Family</b> '+esc(g.cat)+'</span></div>'
+      +'<p class="blurb">'+esc(g.b)+'</p>'
+      +sec('Subgenres',chips(sub,'c-sub'))
+      +sec('Related',chips(siblings(g),'c-rel'))
+      +songsHtml(g.songs.map(parseSong));
+  } else {
+    var a=e.d;
+    body=h+'<div class="kicker">'+esc(e.name)+'</div><h2>'+esc(a.g)+'</h2>'
+      +'<div class="facts"><span class="fact"><b>Origin</b> '+esc(a.o)+'</span><span class="fact"><b>Era</b> '+esc(a.e)+'</span></div>'
+      +'<p class="blurb">'+esc(a.b)+'</p>'
+      +sec('Parent genres',chips(a.p,'c-par'))
+      +sec('Subgenres',chips(a.s,'c-sub'))
+      +sec('Micro-genres',chips(a.m,'c-mic'))
+      +sec('Related',chips(a.r,'c-rel'))
+      +songsHtml(a.songs.map(function(s){return {t:s.t,a:e.name,y:s.y};}));
+  }
+  $('sheet').innerHTML='<button class="x" data-close aria-label="Close">✕</button>'+body;
+  $('modal').classList.add('on');
+  document.body.style.overflow='hidden';
+  $('modal').scrollTop=0;
+}
+function closeModal(){
+  $('modal').classList.remove('on');
+  document.body.style.overflow='';
+  hist=[];
+}
+
+/* =========================================================
+   VIEWS
+   ========================================================= */
+function switchView(v){
+  document.querySelectorAll('.view').forEach(function(el){el.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(el){el.classList.toggle('on',el.dataset.view===v);});
+  $('view-'+v).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildGOTD(){
+  var d=new Date(), day=Math.floor(Date.now()/86400000);
+  var name=GOTD_POOL[day%GOTD_POOL.length];
+  var g=GENRES.filter(function(x){return x.name===name;})[0];
+  var tracks=g.songs.map(parseSong);
+  $('gotd').innerHTML=
+    '<div class="gotd-main" data-open="'+esc(g.name)+'">'
+    +'<span class="badge">Genre of the day</span>'
+    +'<h2>'+esc(g.name)+'</h2>'
+    +'<div class="sub-meta">'+esc(g.cat)+' · '+esc(g.era)+'</div>'
+    +'<p class="blurb">'+esc(g.b)+'</p>'
+    +'<span class="go">Explore this genre <span>→</span></span>'
+    +'</div>'
+    +'<div class="gotd-side"><div class="side-title">Start with these</div>'
+    +tracks.map(function(t,i){
+      return '<div class="track"><div class="track-n">'+(i+1)+'</div><div><div class="track-t">'+esc(t.t)+'</div><div class="track-a">'+esc(t.a)+'</div></div></div>';
+    }).join('')+'</div>';
+}
+
+function cardHtml(g){
+  var s=parseSong(g.songs[0]);
+  return '<button class="card" style="--accent:'+CAT[g.cat]+'" data-open="'+esc(g.name)+'">'
+    +'<div class="card-top"><h5>'+esc(g.name)+'</h5><span class="era">'+esc(g.era)+'</span></div>'
+    +'<div class="subs">'+esc(g.sub.split(' · ').slice(0,4).join(', '))+'</div>'
+    +'<div class="start"><i>▶</i><span>'+esc(s.t)+'</span></div></button>';
+}
+
+function buildGrid(gridId,filter){
+  var cats=[], by={};
+  GENRES.forEach(function(g){
+    if(filter!=='All'&&g.cat!==filter) return;
+    if(!by[g.cat]){by[g.cat]=[];cats.push(g.cat);}
+    by[g.cat].push(g);
+  });
+  var total=0;
+  $(gridId).innerHTML=cats.map(function(c){
+    total+=by[c].length;
+    return '<div class="fam"><div class="fam-head"><span class="dot" style="background:'+CAT[c]+';color:'+CAT[c]+'"></span><h4>'+esc(c)+'</h4><small>'+by[c].length+'</small></div>'
+      +'<div class="grid">'+by[c].map(cardHtml).join('')+'</div></div>';
+  }).join('');
+  return total;
+}
+
+function buildFilters(wrapId,gridId,countId){
+  var cats=['All'];
+  GENRES.forEach(function(g){if(cats.indexOf(g.cat)<0) cats.push(g.cat);});
+  var wrap=$(wrapId);
+  wrap.innerHTML=cats.map(function(c,i){return '<button class="filter'+(i===0?' on':'')+'" data-f="'+esc(c)+'">'+esc(c)+'</button>';}).join('');
+  wrap.addEventListener('click',function(e){
+    var b=e.target.closest('.filter'); if(!b) return;
+    wrap.querySelectorAll('.filter').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    var t=buildGrid(gridId,b.dataset.f);
+    $(countId).textContent=t+' genres';
+  });
+  var t=buildGrid(gridId,'All');
+  $(countId).textContent=t+' genres';
+}
+
+/* =========================================================
+   LAST.FM
+   ========================================================= */
+function lfmErr(m){var e=$('lfm-err');e.textContent=m;e.style.display='block';}
+function lfmConnect(){
+  var u=$('lfm-in').value.trim();
+  $('lfm-err').style.display='none';
+  if(!u) return;
+  if(LFM_KEY==='YOUR_LASTFM_API_KEY'){lfmErr('Add your Last.fm API key to the LFM_KEY line in this file first.');return;}
+  var base='https://ws.audioscrobbler.com/2.0/?api_key='+encodeURIComponent(LFM_KEY)+'&format=json&user='+encodeURIComponent(u)+'&method=';
+  Promise.all([
+    fetch(base+'user.getinfo').then(function(r){return r.json();}),
+    fetch(base+'user.gettopartists&limit=8&period=overall').then(function(r){return r.json();}),
+    fetch(base+'user.getrecenttracks&limit=9').then(function(r){return r.json();})
+  ]).then(function(res){
+    if(res[0].error){lfmErr(res[0].message);return;}
+    var user=res[0].user, arts=(res[1].topartists&&res[1].topartists.artist)||[], rec=(res[2].recenttracks&&res[2].recenttracks.track)||[];
+    $('lfm-connect').style.display='none';
+    $('lfm-data').style.display='block';
+    $('lfm-av').textContent=(user.name||'?')[0].toUpperCase();
+    $('lfm-name').textContent=user.name;
+    var yr=user.registered&&user.registered.unixtime?new Date(user.registered.unixtime*1000).getFullYear():'';
+    $('lfm-stats').textContent=parseInt(user.playcount||0,10).toLocaleString()+' scrobbles'+(yr?' since '+yr:'');
+    $('lfm-artists').innerHTML=arts.map(function(a,i){
+      return '<button class="lrow" data-open="'+esc(a.name)+'"><span class="n">'+(i+1)+'</span><span class="t">'+esc(a.name)+'</span><span class="p">'+parseInt(a.playcount,10).toLocaleString()+' plays</span></button>';
+    }).join('');
+    $('lfm-recent').innerHTML=rec.filter(function(t){return !(t['@attr']&&t['@attr'].nowplaying);}).slice(0,8).map(function(t){
+      var ar=t.artist&&(t.artist['#text']||t.artist.name)||'';
+      return '<button class="lrow" data-open="'+esc(ar)+'"><span class="n">▶</span><span class="t">'+esc(t.name)+'<br><span class="s">'+esc(ar)+'</span></span></button>';
+    }).join('');
+  }).catch(function(){lfmErr('Could not reach Last.fm. Check the username and your connection.');});
+}
+
+/* =========================================================
+   EVENTS + INIT
+   ========================================================= */
+document.addEventListener('click',function(e){
+  var o=e.target.closest('[data-open]');
+  if(o){openEntry(o.dataset.open,!o.dataset.nopush);return;}
+  if(e.target.closest('[data-close]')||e.target===$('modal')){closeModal();return;}
+  var t=e.target.closest('.tab'); if(t){switchView(t.dataset.view);return;}
+  if(e.target.closest('[data-home]')){closeModal();switchView('home');}
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape') closeModal();});
+$('search-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var v=$('q').value.trim();
+  if(v){hist=[];openEntry(v);}
+});
+$('lfm-go').addEventListener('click',lfmConnect);
+$('lfm-in').addEventListener('keydown',function(e){if(e.key==='Enter') lfmConnect();});
+$('lfm-off').addEventListener('click',function(){
+  $('lfm-data').style.display='none';$('lfm-connect').style.display='block';$('lfm-in').value='';
+});
+
+$('quick').insertAdjacentHTML('beforeend',QUICK.map(function(q){return '<button class="pill" data-open="'+esc(q)+'">'+esc(q)+'</button>';}).join(''));
+buildGOTD();
+buildFilters('home-filters','home-grid','home-count');
+buildFilters('idx-filters','idx-grid','idx-count');
+</script>
+
+<script>
+/* =========================================================
+   CHARTS  (Spotify streaming leaders)
+   Built-in data: Wikipedia, List of Spotify streaming records.
+   Songs are [title, artist, streams in billions].
+   Artists are [name, songs in the all-time top 100].
+   Paste kworb tables in the Charts tab to replace either list.
+   ========================================================= */
+(function(){
+var WIKI_SRC='Wikipedia, September 2026 snapshot';
+var WIKI_SONGS=[
+["Blinding Lights","The Weeknd",5.578],["Shape Of You","Ed Sheeran",5.083],["Sweater Weather","The Neighbourhood",4.857],
+["Starboy","The Weeknd and Daft Punk",4.740],["As It Was","Harry Styles",4.610],["One Dance","Drake, Wizkid, and Kyla",4.451],
+["Sunflower","Post Malone and Swae Lee",4.440],["Someone You Loved","Lewis Capaldi",4.428],["Perfect","Ed Sheeran",4.100],
+["Stay","The Kid Laroi and Justin Bieber",4.065],["I Wanna Be Yours","Arctic Monkeys",3.982],["Birds of a Feather","Billie Eilish",3.963],
+["Die With A Smile","Lady Gaga and Bruno Mars",3.962],["Yellow","Coldplay",3.960],["Believer","Imagine Dragons",3.953],
+["Heat Waves","Glass Animals",3.918],["The Night We Met","Lord Huron",3.915],["Riptide","Vance Joy",3.893],
+["Lovely","Billie Eilish and Khalid",3.869],["Closer","The Chainsmokers and Halsey",3.868],["Something Just Like This","The Chainsmokers and Coldplay",3.763],
+["Every Breath You Take","The Police",3.734],["Say You Won't Let Go","James Arthur",3.688],["Another Love","Tom Odell",3.685],
+["Iris","The Goo Goo Dolls",3.680],["Counting Stars","OneRepublic",3.633],["Take Me To Church","Hozier",3.579],
+["Photograph","Ed Sheeran",3.541],["Dance Monkey","Tones And I",3.506],["Viva La Vida","Coldplay",3.505],
+["Can't Hold Us","Macklemore & Ryan Lewis and Ray Dalton",3.491],["Cruel Summer","Taylor Swift",3.477],["Locked Out Of Heaven","Bruno Mars",3.466],
+["Just the Way You Are","Bruno Mars",3.460],["Mr. Brightside","The Killers",3.452],["Rockstar","Post Malone and 21 Savage",3.447],
+["Señorita","Shawn Mendes and Camila Cabello",3.412],["Die For You","The Weeknd",3.405],["Watermelon Sugar","Harry Styles",3.390],
+["That's What I Like","Bruno Mars",3.381],["Love Yourself","Justin Bieber",3.352],["In The End","Linkin Park",3.351],
+["Don't Start Now","Dua Lipa",3.315],["When I Was Your Man","Bruno Mars",3.284],["Bohemian Rhapsody","Queen",3.263],
+["Circles","Post Malone",3.261],["Wake Me Up","Avicii",3.223],["Without Me","Eminem",3.219],
+["Billie Jean","Michael Jackson",3.215],["Goosebumps","Travis Scott and Kendrick Lamar",3.213]
+];
+var WIKI_ARTISTS=[
+["The Weeknd",6],["Bruno Mars",6],["Ed Sheeran",4],["Coldplay",4],["Justin Bieber",3],["Post Malone",3],
+["Imagine Dragons",3],["Arctic Monkeys",3],["Billie Eilish",3],["Shawn Mendes",3],["Dua Lipa",3],["Kendrick Lamar",2]
+];
+
+var KS='genrebase_kworb_songs', KA='genrebase_kworb_artists';
+function lget(k){try{var r=localStorage.getItem(k);return r?JSON.parse(r):null;}catch(e){return null;}}
+function lset(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function ldel(k){try{localStorage.removeItem(k);}catch(e){}}
+
+function defSongs(){return {rows:WIKI_SONGS.map(function(r){return {t:r[0],a:r[1],v:Math.round(r[2]*1e9)};}),src:WIKI_SRC,unit:'streams'};}
+function defArts(){return {rows:WIKI_ARTISTS.map(function(r){return {a:r[0],v:r[1]};}),src:WIKI_SRC,unit:'songs'};}
+
+var songs=lget(KS)||defSongs();
+var arts=lget(KA)||defArts();
+var showAll=false;
+
+function fmt(n){
+  return Math.round(n).toLocaleString('en-US');
+}
+function rowHtml(i,name,sub,label,val,max){
+  var w=max?Math.max(2,Math.round(val/max*100)):0;
+  return '<div class="crow"><div class="crank">'+(i+1)+'</div>'
+    +'<div class="cname">'+esc(name)+(sub?'<small>'+esc(sub)+'</small>':'')+'</div>'
+    +'<div class="cval">'+esc(label)+'</div>'
+    +'<div class="cbar"><i style="width:'+w+'%"></i></div></div>';
+}
+
+function render(){
+  var sr=songs.rows, lim=showAll?sr.length:Math.min(20,sr.length), smax=sr.length?sr[0].v:0, h='', i;
+  for(i=0;i<lim;i++) h+=rowHtml(i,sr[i].t,sr[i].a,fmt(sr[i].v),sr[i].v,smax);
+  $('ch-songs').innerHTML=h;
+  $('ch-songs-src').textContent='Source: '+songs.src;
+  var more=$('ch-more');
+  more.style.display=sr.length>20?'':'none';
+  more.textContent=showAll?'Show top 20':'Show all '+sr.length;
+
+  var ar=arts.rows, amax=ar.length?ar[0].v:0; h='';
+  for(i=0;i<ar.length;i++){
+    var lab=arts.unit==='songs'?ar[i].v+(ar[i].v===1?' song':' songs'):fmt(ar[i].v);
+    h+=rowHtml(i,ar[i].a,'',lab,ar[i].v,amax);
+  }
+  $('ch-artists').innerHTML=h;
+  $('ch-art-title').textContent=arts.unit==='songs'?'Most songs in the all-time top 100':'Most streamed artists';
+  $('ch-art-src').textContent='Source: '+arts.src;
+}
+
+/* Parses rows copied from a kworb table.
+   Handles tab separated cells and plain spaced text.
+   Songs rows look like: rank, "Artist - Title", streams, daily. */
+function parse(text,mode){
+  var out=[];
+  text.split(/\r?\n/).forEach(function(line){
+    line=line.trim(); if(!line) return;
+    var cells=line.split(/\t+|\s{2,}/).map(function(c){return c.trim();}).filter(Boolean);
+    var name=null, streams=null, i, c, n, m;
+    for(i=0;i<cells.length;i++){
+      c=cells[i];
+      if(/^[\d.,]+$/.test(c)){
+        n=parseFloat(c.replace(/,/g,''));
+        if(streams===null&&name!==null&&n>=1e6) streams=n;
+      }else if(name===null&&/[A-Za-zÀ-￿]/.test(c)){
+        name=c;
+      }
+    }
+    if(name===null||streams===null){
+      m=line.match(/^\d*\s*(.+?)\s+(\d{1,3}(?:,\d{3}){2,})\b/);
+      if(!m) return;
+      name=m[1]; streams=parseFloat(m[2].replace(/,/g,''));
+    }
+    if(mode==='songs'){
+      var k=name.indexOf(' - ');
+      out.push(k>0?{a:name.slice(0,k),t:name.slice(k+3),v:streams}:{a:'',t:name,v:streams});
+    }else{
+      out.push({a:name,v:streams});
+    }
+  });
+  out.sort(function(x,y){return y.v-x.v;});
+  return out.slice(0,100);
+}
+
+function msg(t,bad){var m=$('ch-msg');m.textContent=t;m.style.color=bad?'#FCA5A5':'var(--text2)';}
+function doImport(mode){
+  var rows=parse($('ch-paste').value,mode);
+  if(!rows.length){msg('No rows with stream counts found. Copy the whole table, numbers included.',true);return;}
+  var src='kworb.net, pasted '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  if(mode==='songs'){songs={rows:rows,src:src,unit:'streams'};lset(KS,songs);showAll=false;}
+  else{arts={rows:rows,src:src,unit:'streams'};lset(KA,arts);}
+  render();
+  msg('Loaded '+rows.length+' '+mode+'.');
+}
+
+$('ch-more').addEventListener('click',function(){showAll=!showAll;render();});
+$('ch-imp-songs').addEventListener('click',function(){doImport('songs');});
+$('ch-imp-art').addEventListener('click',function(){doImport('artists');});
+$('ch-reset').addEventListener('click',function(){
+  ldel(KS);ldel(KA);songs=defSongs();arts=defArts();showAll=false;render();msg('Back to the built-in data.');
+});
+
+render();
+})();
+</script>
+
+<script>
+/* =========================================================
+   DAILY TRACKER
+   Reads window.GB_LATEST from data/latest.js.
+   That file is written by scripts/update.mjs once a day.
+   ========================================================= */
+(function(){
+var L=window.GB_LATEST;
+var rows=(L&&L.rows)||[];
+var sortKey=(L&&L.days>=2)?'pd':'pt', setKey='all', showAll=false;
+
+function fmtT(n){
+  if(n==null) return '-';
+  return Math.round(n).toLocaleString('en-US');
+}
+function cell(total,delta,extra){
+  var cls='dcell'+(extra||'');
+  if(total==null) return '<div class="'+cls+'"><b>-</b></div>';
+  var d='';
+  if(delta!=null) d='<small class="'+(delta<0?'neg':'pos')+'">'+(delta>0?'+':delta<0?'-':'')+fmtT(Math.abs(delta))+'/day</small>';
+  return '<div class="'+cls+'"><b>'+fmtT(total)+'</b>'+d+'</div>';
+}
+
+var SORTS={
+  pd:function(r){return r.lf&&r.lf.d1!=null?r.lf.d1:null;},
+  pt:function(r){return r.lf?r.lf.p:null;},
+  vd:function(r){return r.yt&&r.yt.vd1!=null?r.yt.vd1:null;},
+  kd:function(r){return r.yt&&r.yt.kd1!=null?r.yt.kd1:null;}
+};
+
+function render(){
+  var f=SORTS[sortKey];
+  var list=rows.filter(function(r){
+    return setKey==='all'||(setKey==='chart'&&r.chart)||(setKey==='mine'&&r.mine);
+  }).sort(function(a,b){
+    var x=f(a), y=f(b);
+    if(x==null&&y==null) return 0;
+    if(x==null) return 1;
+    if(y==null) return -1;
+    return y-x;
+  });
+  var lim=showAll?list.length:Math.min(25,list.length), h='', i, r;
+  for(i=0;i<lim;i++){
+    r=list[i];
+    h+='<div class="dt-grid dt-row"><div class="crank">'+(i+1)+'</div>'
+      +'<div class="dt-song"><div class="t">'+esc(r.t)+(r.mine?'<span class="tag">yours</span>':'')+'</div><div class="a">'+esc(r.a)+'</div></div>'
+      +cell(r.lf&&r.lf.p, r.lf&&r.lf.d1, '')
+      +cell(r.yt&&r.yt.v, r.yt&&r.yt.vd1, '')
+      +cell(r.yt&&r.yt.k, r.yt&&r.yt.kd1, ' c-likes')
+      +'</div>';
+  }
+  if(!list.length) h='<p class="empty" style="padding:1rem 0">No songs in this set yet.</p>';
+  $('dt-rows').innerHTML=h;
+  var more=$('dt-more');
+  more.style.display=list.length>25?'':'none';
+  more.textContent=showAll?'Show top 25':'Show all '+list.length;
+}
+
+function buttons(id,opts,cur,pick){
+  var w=$(id);
+  w.innerHTML=opts.map(function(o){
+    return '<button class="filter'+(o[0]===cur?' on':'')+'" data-k="'+o[0]+'">'+esc(o[1])+'</button>';
+  }).join('');
+  w.addEventListener('click',function(e){
+    var b=e.target.closest('.filter'); if(!b) return;
+    w.querySelectorAll('.filter').forEach(function(x){x.classList.toggle('on',x===b);});
+    pick(b.getAttribute('data-k'));
+    showAll=false;
+    render();
+  });
+}
+
+if(!(L&&L.date&&rows.length)){
+  var em=$('dt-empty');
+  em.style.display='';
+  em.innerHTML='<p class="empty">The daily job has not run yet. Once it has, totals and daily change show up here. Setup steps are in the README.</p>';
+  return;
+}
+
+$('dt-wrap').style.display='';
+$('dt-updated').textContent='Updated '
+  +new Date(L.date+'T00:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})
+  +' · '+L.days+(L.days===1?' day':' days')+' of history';
+
+var notes=[];
+if(L.days<2) notes.push('Daily change shows up after the second run. Totals are live now.');
+var noYt=rows.filter(function(r){return !r.yt;}).length;
+if(noYt>0) notes.push(noYt+(noYt===1?' song has':' songs have')+' no YouTube match yet. Matches fill in over the next runs.');
+if(notes.length){var n=$('dt-note');n.style.display='';n.textContent=notes.join(' ');}
+
+buttons('dt-sort',[['pd','Plays today'],['pt','Total plays'],['vd','Views today'],['kd','Likes today']],sortKey,function(k){sortKey=k;});
+var sets=[['all','All'],['chart','Chart songs']];
+if(rows.some(function(r){return r.mine;})) sets.push(['mine','Yours']);
+buttons('dt-set',sets,setKey,function(k){setKey=k;});
+$('dt-more').addEventListener('click',function(){showAll=!showAll;render();});
+render();
+})();
+</script>
+</body>
+</html>
